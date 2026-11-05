@@ -54,18 +54,13 @@ public static class SubmergedCompatibility
 
     public static bool ReadyPlayerAmount(dynamic __instance, ref int __result)
     {
-        if (!Loaded)
+        if (!Loaded || MCIPlugin.Enabled)
             return true;
 
-        if (MCIPlugin.Enabled)
-        {
-            __result = __instance.GetTotalPlayerAmount();
-            Enum.TryParse(SpawnInState, "Done", true, out var e);
-            currentState.SetValue(__instance, e);
-            return false;
-        }
-
-        return true;
+        __result = __instance.GetTotalPlayerAmount();
+        Enum.TryParse(SpawnInState, "Done", true, out var e);
+        currentState.SetValue(__instance, e);
+        return false;
     }
 
     public static void ImpartSub(PlayerControl bot)

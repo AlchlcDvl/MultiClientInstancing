@@ -1,4 +1,5 @@
 ﻿using BepInEx;
+using BepInEx.Configuration;
 using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
@@ -7,16 +8,13 @@ using MCI.Components;
 using MiraAPI;
 using Reactor;
 using Reactor.Utilities;
-using TownOfUs;
-using UnityEngine.SceneManagement;
 
 namespace MCI;
 
-[BepInAutoPlugin("auavengers.tou.mci", "TOU-MCI")]
+[BepInAutoPlugin("auavengers.mci", "MCI")]
 [BepInProcess("Among Us.exe")]
 [BepInDependency(ReactorPlugin.Id)]
 [BepInDependency(MiraApiPlugin.Id)]
-[BepInDependency(TownOfUsPlugin.Id)]
 [BepInDependency(SubmergedCompatibility.SUBMERGED_GUID, BepInDependency.DependencyFlags.SoftDependency)]
 public partial class MCIPlugin : BasePlugin
 {
@@ -36,45 +34,45 @@ public partial class MCIPlugin : BasePlugin
     ///     Determines if the current build is a dev build.
     /// </summary>
     public static bool IsDevBuild => Version.Contains("dev", StringComparison.OrdinalIgnoreCase) || Version.Contains("ci", StringComparison.OrdinalIgnoreCase);
-    
+
+    private ConfigEntry<bool> logControls;
+
     public override void Load()
     {
-        ReactorCredits.Register("TOU-MCI", Version, IsDevBuild, ReactorCredits.AlwaysShow);
-        Logger = this.Log;
+        ReactorCredits.Register("MCI", Version, IsDevBuild, ReactorCredits.AlwaysShow);
+        Logger = Log;
 
         Harmony.PatchAll();
         SubmergedCompatibility.Initialize();
 
         ClassInjector.RegisterTypeInIl2Cpp<Debugger>();
-        ClassInjector.RegisterTypeInIl2Cpp<Embedded.ReactorCoroutines.Coroutines.Component>();
-        Debugger = this.AddComponent<Debugger>();
-        this.AddComponent<Embedded.ReactorCoroutines.Coroutines.Component>();
+        Debugger = AddComponent<Debugger>();
 
-        SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>)((scene, _) =>
-        {
-            if (scene.name == "MainMenu")
-                ModManager.Instance.ShowModStamp();
-        }));
+        logControls = Config.Bind("Logging", "Log Controls In Console", false);
 
-        Logger.LogWarning($"\n-------------------------\n" + // Yellow stands out.
-                       $"| MultiClientInstancing |\n" +
-                       $"|                       |\n" +
-                       $"| Developed By:         |\n" +
-                       $"| MyDragonBreath        |\n" +
-                       $"| WhichTwix             |\n" +
-                       $"| AlchlcDvl             |\n" +
-                       $"| lekillerdesgames      |\n" +
-                       $"| AtonyGit (for ToU)    |\n" +
-                       $"-------------------------\n" +
-                       $"| Controls:             |\n" +
-                       $"| F5: Add Players       |\n" +
-                       $"|  + LSHIFT To Bypass 15|\n" +
-                       $"| F6: Toggle Bot Removal|\n" +
-                       $"|  + LSHIFT IKWIDM      |\n" +
-                       $"| F9: Cycle Upwards     |\n" +
-                       $"| F10: Cycle Downwards  |\n" +
-                       $"| F11: Remove All       |\n" +
-                       $"| F1: Toggle Debugger   |\n" +
-                       $"-------------------------");
+        if (!logControls.Value)
+            return;
+
+        Logger.LogWarning("\n" +
+                        "|------------------------|\n" + // Yellow stands out.
+                        "| MultiClientInstancing  |\n" +
+                        "|                        |\n" +
+                        "| Developed By:          |\n" +
+                        "| MyDragonBreath         |\n" +
+                        "| WhichTwix              |\n" +
+                        "| AlchlcDvl              |\n" +
+                        "| lekillerdesgames       |\n" +
+                        "| AtonyGit               |\n" +
+                        "|------------------------|\n" +
+                        "| Controls:              |\n" +
+                        "| F5: Add Players        |\n" +
+                        "|  + LSHIFT To Bypass 15 |\n" +
+                        "| F6: Toggle Bot Removal |\n" +
+                        "|  + LSHIFT IKWIDM       |\n" +
+                        "| F9: Cycle Upwards      |\n" +
+                        "| F10: Cycle Downwards   |\n" +
+                        "| F11: Remove All        |\n" +
+                        "| F1: Toggle Debugger    |\n" +
+                        "|------------------------|");
     }
 }

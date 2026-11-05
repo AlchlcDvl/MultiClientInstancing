@@ -36,7 +36,7 @@ public static class RpcLoopback
     ///     <see cref="InnerNetClient.FinishRpcImmediately" /> only receives the writer, so the id has to be remembered
     ///     from the matching <see cref="InnerNetClient.StartRpcImmediately" /> call.
     /// </summary>
-    private static readonly Dictionary<IntPtr, int> PendingTargets = new();
+    private static readonly Dictionary<IntPtr, int> PendingTargets = [];
 
     internal static void Reset() => PendingTargets.Clear();
 
@@ -44,10 +44,8 @@ public static class RpcLoopback
     [HarmonyPatch(nameof(InnerNetClient.StartRpcImmediately))]
     public static void StartRpcImmediatelyPostfix(int targetClientId, MessageWriter __result)
     {
-        if (targetClientId < 0 || __result == null)
-            return;
-
-        PendingTargets[__result.Pointer] = targetClientId;
+        if (targetClientId >= 0 && __result != null)
+            PendingTargets[__result.Pointer] = targetClientId;
     }
 
     [HarmonyPrefix]

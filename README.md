@@ -1,4 +1,4 @@
-ngu# AmongUs.MultiClientInstancing
+# AmongUs.MultiClientInstancing
 
 I think the best way to describe this is as a method of host testing what your "mod" could look like with multiple clients.<br>
 It is in no way a replacement for testing your mod.<br>

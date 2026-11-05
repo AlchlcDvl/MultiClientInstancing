@@ -1,9 +1,9 @@
-﻿using InnerNet;
-using UnityEngine;
-using BepInEx.Unity.IL2CPP;
+﻿using BepInEx.Unity.IL2CPP;
+using InnerNet;
 using MCI.Patches;
+using Reactor.Utilities;
 using System.Collections;
-using MCI.Embedded.ReactorCoroutines;
+using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
@@ -11,9 +11,10 @@ namespace MCI;
 
 public static class InstanceControl
 {
-    internal static Dictionary<int, ClientData> Clients = new();
-    internal static Dictionary<byte, int> PlayerClientIDs = new();
+    internal static Dictionary<int, ClientData> Clients = [];
+    internal static Dictionary<byte, int> PlayerClientIDs = [];
     public static PlayerControl CurrentPlayerInPower { get; private set; }
+    public static int Creating;
 
     public static int AvailableId()
     {
@@ -106,11 +107,12 @@ public static class InstanceControl
 
     public static void CreatePlayerInstance()
     {
-        Coroutines.Start(_CreatePlayerInstanceEnumerator());
+        Coroutines.Start(CoCreatePlayerInstanceEnumerator());
     }
 
-    internal static IEnumerator _CreatePlayerInstanceEnumerator()
+    internal static IEnumerator CoCreatePlayerInstanceEnumerator()
     {
+        Creating++;
         var sampleId = AvailableId();
         var sampleC = new ClientData(sampleId, $"Bot-{sampleId}", new()
         {
@@ -141,6 +143,7 @@ public static class InstanceControl
             sampleC.Character.GetComponent<DummyBehaviour>().enabled = true;
 
         yield return sampleC.Character.MyPhysics.CoSpawnPlayer(LobbyBehaviour.Instance);
+        Creating--;
         yield break;
     }
 
@@ -182,6 +185,7 @@ public static class InstanceControl
         __instance.SkipVoteButton.gameObject.SetActive(true);
         __instance.SkipVoteButton.AmDead = false;
         __instance.Glass.gameObject.SetActive(false);
+
         if (CacheMeetingSprite.Cache)
             __instance.Glass.sprite = CacheMeetingSprite.Cache;
     }

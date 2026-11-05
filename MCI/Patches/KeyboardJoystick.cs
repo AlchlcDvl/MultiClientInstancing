@@ -38,7 +38,7 @@ public static class Keyboard_Joystick
         if (Input.GetKeyDown(KeyCode.F11))
             InstanceControl.RemoveAllPlayers();
     }
-    
+
     internal static void IKnowWhatImDoingToggle()
     {
         MCIPlugin.IKnowWhatImDoing = !MCIPlugin.IKnowWhatImDoing;

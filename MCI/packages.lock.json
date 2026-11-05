@@ -14,9 +14,9 @@
       },
       "AmongUs.GameLibs.Steam": {
         "type": "Direct",
-        "requested": "[2026.8.18, )",
-        "resolved": "2026.8.18",
-        "contentHash": "sSGu2zGYvLboOc83PzPxQ0yGsK1YrhIO/538Tfzc/5FKfEbGCtCQErcKV0wdiYZCHGpCe561RzzfrBtp46jcgQ=="
+        "requested": "[2026.9.29, )",
+        "resolved": "2026.9.29",
+        "contentHash": "LhZAevu5OV03KpFLjqXRb9RP2rrWbm8xemdIyNFQVPOVwV0etInH2BZFpDBBIrSnqGzCWa7qOHBhIaVDIfk/jA=="
       },
       "BepInEx.AutoPlugin": {
         "type": "Direct",
@@ -61,17 +61,6 @@
         "requested": "[10.12.0.118525, )",
         "resolved": "10.12.0.118525",
         "contentHash": "uP38bsYegQBk8WOM6LYIAht6hrA7tcJgep/WuifPJjhjtjysPUP/iM/c1+P2+llNIDmm1s8Xh86+WG3K71eycw=="
-      },
-      "TownOfUsMira": {
-        "type": "Direct",
-        "requested": "[1.7.2, )",
-        "resolved": "1.7.2",
-        "contentHash": "WI88cSjKGckK/sqxs8lTQ4zgjt50DQCJstpFhcrKFNJHIBQ5owxD+kM4wy+R74tWGOTHjgx/kOJP5wPguyqmcw==",
-        "dependencies": {
-          "AllOfUs.MiraAPI": "0.5.0",
-          "BepInEx.Unity.IL2CPP": "6.0.0-be.735",
-          "Reactor": "2.5.0-ci.371"
-        }
       },
       "AsmResolver": {
         "type": "Transitive",

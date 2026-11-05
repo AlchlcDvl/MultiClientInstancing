@@ -15,9 +15,9 @@ public static class AirshipSpawn
             if (!player.Data.PlayerName.Contains(MCIPlugin.RobotName))
                 continue;
 
-            var rand = UnityEngine.Random.Range(0, __instance.Locations.Count);
+            var rand = UnityEngine.Random.Range(0, __instance.LocationButtons.Count(x => x.gameObject.activeSelf && x.enabled));
             player.gameObject.SetActive(true);
-            player.NetTransform.RpcSnapTo(__instance.Locations[rand].Location);
+            __instance.LocationButtons[rand].ReceiveClickUp();
         }
     }
 }
